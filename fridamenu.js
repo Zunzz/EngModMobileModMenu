@@ -258,68 +258,31 @@ class Menu {
      
 }
 
-function readArrayByIndex(instance, index) {
-    let startArrayIndexAddress = instance.add(0x10)
-    return startArrayIndexAddress.add(index * 4).readPointer()
-}
-
-var option = []
-option[0] = {state: false}
-option[1] = {state: false}
-option[2] = {state: false}
-function hookPlayerUpdate(module) {
-    const playerUpdate = module.base.add(0x584828)
-    Interceptor.attach(playerUpdate, {
-            onEnter(args) {
-                let currentWeapon = args[0].add(0x18).readInt()
-                let weaponsArrayInstance= args[0].add(0x14).readPointer()
-                let weaponsInstance= readArrayByIndex(weaponsArrayInstance, currentWeapon)
-                let weaponInstance = weaponsInstance.add(0x8).readPointer()
-                if(option[0].state) {
-                    let playerHealthInstance = args[0].add(0x0c).readPointer()
-                    playerHealthInstance.add(0xc).writeFloat(100)
-                }
-                
-                if (option[1].state)
-                    weaponInstance.add(0x68).writeInt(3)
-                
-                
-                if(option[2].state) {
-                    weaponInstance.add(0x5C).writeFloat(0)
-                } else weaponInstance.add(0x5C).writeFloat(0.5)
-            }
-    })
-}
-
-function createHooks() {
-    const module = Process.getModuleByName("libil2cpp.so")
-    hookPlayerUpdate(module)
-}
-
+//options on/off
 const option1 = {
     on() {
-        option[0].state = true
+        //hook or call
     },
     off() {
-        option[0].state = false
+        //deatch hook or call
     }
 }
 
 const option2 = {
     on() {
-        option[1].state = true
+        
     },
     off() {
-        option[1].state = false
+        
     }
 }
 
 const option3 = {
     on() {
-        option[2].state = true
+        
     },
     off() {
-        option[2].state = false
+        
     }
 }
 
@@ -327,15 +290,20 @@ Java.perform(function() {
     Java.scheduleOnMainThread(function() {
         const mainActivity = getMainActivity(classLoader)
         const menu = new Menu(classLoader, mainActivity)
+        //set name and color that will appear with the menu minimized.
         menu.createMenuStart("Zunz", "#006400")
+        //set menu layout color and size
         menu.createMenuLayout("#18122B", 900)
+        //set cor bar color
         menu.createMenuBarLayout("#635985")
+        //name and name color
         menu.createMenuBarTitle("EngModMobile", "#FFC107")
+        //set color of on and off options.
         menu.createMenuOptionsLayout("#443C68", "#393053")
-        createHooks()
-        menu.addOption("option1", "Health", option1)
-        menu.addOption("option2", "Ammo", option2)
-        menu.addOption("option3", "Fire rate", option3)
+        //id, name and object with on and off functions
+        menu.addOption("option1", "Option 1", option1)
+        menu.addOption("option2", "Option 2", option2)
+        menu.addOption("option3", "Option 3", option3)
         menu.start()
     })
 })

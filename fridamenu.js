@@ -1,4 +1,3 @@
-
 const classLoader = {
     Gravity: Java.use("android.view.Gravity"),
     TextView: Java.use("android.widget.TextView"),
@@ -13,7 +12,9 @@ const classLoader = {
     String: Java.use("java.lang.String"),
     ScrollView: Java.use("android.widget.ScrollView"),
     View_OnClickListener: Java.use("android.view.View$OnClickListener"),
-}
+    SeekBar: Java.use("android.widget.SeekBar") // Adicionando definição para SeekBar
+};
+
 
 function pixelsToPixelDensity(context, pixels) {
     let screenPixelDensity = context.getResources().getDisplayMetrics().density.value
@@ -46,6 +47,7 @@ class Menu {
     #menuScrollView
     #colorOn
     #colorOff
+
 
     constructor(classLoader, activity) {
         this.#classLoader = classLoader
@@ -198,6 +200,79 @@ class Menu {
         this.#createOptionClickEvent(id, option, callbacks)
     }
 
+    
+    addText(text, textSize, textColor) {
+        const layoutParams = this.#classLoader.LinearLayout_LayoutParams.$new(this.#WRAP_CONTENT, this.#WRAP_CONTENT);
+        const margin = pixelsToPixelDensity(this.#activity, 20);
+        const textView = this.#classLoader.TextView.$new(this.#activity);
+
+        textView.setText(this.#classLoader.String.$new(text));
+        textView.setTextSize(textSize);
+        textView.setTextColor(this.#classLoader.Color.parseColor(textColor));
+        layoutParams.setMargins(0, 0, 0, margin);
+        textView.setLayoutParams(layoutParams);
+
+        this.#menuScrollLayout.addView(textView);
+    }
+
+    addSeekBar(textValue,initialValue, minValue, maxValue, callback) {
+        const layoutParams = this.#classLoader.LinearLayout_LayoutParams.$new(this.#MATCH_PARENT, this.#WRAP_CONTENT);
+        const margin = pixelsToPixelDensity(this.#activity,1);
+        const seekBar = this.#classLoader.SeekBar.$new(this.#activity);
+        const textView = this.#classLoader.TextView.$new(this.#activity);
+        seekBar.setMax(maxValue - minValue);
+        seekBar.setProgress(0);
+        layoutParams.setMargins(0, 0, 0, margin);
+        seekBar.setLayoutParams(layoutParams);
+        const text = Java.use("java.lang.String").$new(textValue+ " "+ initialValue);
+        textView.setText(text)
+        seekBar.setProgress(initialValue);
+
+        const SeekBarChangeListener = Java.use("android.widget.SeekBar$OnSeekBarChangeListener");
+        const SeekBarChangeListenerImplementation = Java.registerClass({
+            name: "com.example.SeekBarChangeListener",
+            implements: [SeekBarChangeListener],
+            methods: {
+                onProgressChanged(seekBar, progress, fromUser) {
+                    const value = progress + minValue;
+                    const text = Java.use("java.lang.String").$new(textValue+" "+value);
+
+                    textView.setText(text);
+                    callback(value,"move");
+                },
+                onStartTrackingTouch(seekBar) {
+                    const progress = seekBar.getProgress()
+                    const value = progress + minValue;
+                    const text = Java.use("java.lang.String").$new(textValue+" "+value);
+
+                    textView.setText(text);
+                    callback(value,"start");
+
+                },
+                onStopTrackingTouch(seekBar) {
+                    const progress = seekBar.getProgress()
+
+                    const value = progress + minValue;
+                    const text = Java.use("java.lang.String").$new(textValue+" "+value);
+
+                    textView.setText(text);
+                    callback(value,"end");
+                }
+            }
+        });
+
+        seekBar.setOnSeekBarChangeListener(SeekBarChangeListenerImplementation.$new());
+        this.#menuScrollLayout.addView(textView);
+
+        this.#menuScrollLayout.addView(seekBar);
+
+
+        textView.setLayoutParams(layoutParams);
+        textView.setGravity(this.#classLoader.Gravity.CENTER.value);
+    }
+
+
+
     #createMainLayoutEvent() {
         const mainLayout = this.#mainLayout
         const menuLayout = this.#menuLayout
@@ -237,7 +312,7 @@ class Menu {
                             view.setX(event.getRawX() + initialX)
                             view.setY(event.getRawY() + initialY)
                             let deltaTime = Date.now() - initialTouchTime
-                            if (deltaTime > 200)isMove = true
+                            if (deltaTime > 200) isMove = true
                             break
                         default:
                             return false
@@ -258,6 +333,13 @@ class Menu {
         this.#drawMenuOptions()
         this.#createMainLayoutEvent()
     }
+
+
+   
+
+
+
+
 
 }
 
@@ -296,7 +378,7 @@ Java.perform(function () {
         //set name and color that will appear with the menu minimized.
         menu.createMenuStart("Zunz", "#006400")
         //set menu layout color and size
-        menu.createMenuLayout("#18122B", 900)
+        menu.createMenuLayout("#18122B",400)
         //set cor bar color
         menu.createMenuBarLayout("#635985")
         //name and name color
@@ -307,6 +389,12 @@ Java.perform(function () {
         menu.addOption("option1", "Option 1", option1)
         menu.addOption("option2", "Option 2", option2)
         menu.addOption("option3", "Option 3", option3)
+        menu.addSeekBar("Velocidade:",1, 1, 100, function (changed, state) {
+            if ( state == "end")
+            console.log("Movo Valor: ", changed)
+        })
+
+       
         menu.start()
     })
 })

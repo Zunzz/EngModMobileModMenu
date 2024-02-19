@@ -8,7 +8,7 @@ Termux:
    ```bash
    git clone https://github.com/Zunzz/EngModMobileModMenu.git
    ```
-2. Open the game with frida-gadget or if you are using frida-server, write it in termux
+2. Open the game with frida-gadget, write it in termux
 ```bash
 frida -H localhost gadget -l [script path /EngModMobileModMenu/fridamenu.js]
 ```

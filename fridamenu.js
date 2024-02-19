@@ -262,9 +262,9 @@ class Menu {
     }
 
 
-    createSeekBar(textValue,initialValue, minValue, maxValue, callback) {
+    addSeekBar(textValue,initialValue, minValue, maxValue, callback) {
         const layoutParams = this.#classLoader.LinearLayout_LayoutParams.$new(this.#MATCH_PARENT, this.#WRAP_CONTENT);
-        const margin = pixelsToPixelDensity(this.#activity,6);
+        const margin = pixelsToPixelDensity(this.#activity,1);
         const seekBar = this.#classLoader.SeekBar.$new(this.#activity);
         const textView = this.#classLoader.TextView.$new(this.#activity);
         seekBar.setMax(maxValue - minValue);
@@ -383,7 +383,7 @@ Java.perform(function () {
         menu.addOption("option1", "Option 1", option1)
         menu.addOption("option2", "Option 2", option2)
         menu.addOption("option3", "Option 3", option3)
-        menu.createSeekBar("Velocidade:",1, 1, 100, function (changed, state) {
+        menu.addSeekBar("Velocidade:",1, 1, 100, function (changed, state) {
             if ( state == "end")
             console.log("Movo Valor: ", changed)
         })

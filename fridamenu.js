@@ -16,15 +16,15 @@ const classLoader = {
 };
 
 
-function pixelsToPixelDensity(context, pixels) {
-    let screenPixelDensity = context.getResources().getDisplayMetrics().density.value
-    return parseInt(pixels / screenPixelDensity)
+function pixelDensityToPixels(context, dp) {
+    const density = context.getResources().getDisplayMetrics().density.value
+    return parseInt(dp * density)
 }
 
 function getMainActivity(classLoader) {
-    let activityThread = classLoader.ActivityThread.sCurrentActivityThread.value
-    let mActivities = activityThread.mActivities.value
-    let activityClientRecord = Java.cast(mActivities.valueAt(0), classLoader.ActivityThread_ActivityClientRecord)
+    const activityThread = classLoader.ActivityThread.sCurrentActivityThread.value
+    const mActivities = activityThread.mActivities.value
+    const activityClientRecord = Java.cast(mActivities.valueAt(0), classLoader.ActivityThread_ActivityClientRecord)
     return activityClientRecord.activity.value
 }
 
@@ -77,7 +77,7 @@ class Menu {
     #createMenuScroll() {
         const layoutParams = this.#classLoader.LinearLayout_LayoutParams.$new(this.#MATCH_PARENT, this.#WRAP_CONTENT)
         this.#menuScrollView = this.#classLoader.ScrollView.$new(this.#activity)
-        const padding = pixelsToPixelDensity(this.#activity, 30)
+        const padding = pixelDensityToPixels(this.#activity, 8)
         this.#menuScrollView.setLayoutParams(layoutParams)
         this.#menuScrollView.setPadding(padding, padding, padding, padding)
         this.#menuScrollView.mFillViewport.value = true
@@ -106,7 +106,7 @@ class Menu {
     }
 
     createMenuLayout(color, size) {
-        const SIZE_DP = pixelsToPixelDensity(this.#activity, size)
+        const SIZE_DP = pixelDensityToPixels(this.#activity, size)
         const layoutParams = this.#classLoader.LinearLayout_LayoutParams.$new(SIZE_DP, SIZE_DP)
         this.#menuLayout = this.#classLoader.LinearLayout.$new(this.#activity)
         this.#menuLayout.setLayoutParams(layoutParams)
@@ -115,7 +115,7 @@ class Menu {
     }
 
     createMenuBarLayout(color) {
-        const padding = pixelsToPixelDensity(this.#activity, 40)
+        const padding = pixelDensityToPixels(this.#activity, 10)
         const layoutParams = this.#classLoader.LinearLayout_LayoutParams.$new(this.#MATCH_PARENT, this.#WRAP_CONTENT)
         this.#menuBarLayout = this.#classLoader.LinearLayout.$new(this.#activity)
         this.#menuBarLayout.setLayoutParams(layoutParams)
@@ -187,9 +187,9 @@ class Menu {
 
     addOption(id, name, callbacks) {
         const layoutParams = this.#classLoader.LinearLayout_LayoutParams.$new(this.#MATCH_PARENT, this.#WRAP_CONTENT)
-        const padding = pixelsToPixelDensity(this.#activity, 20)
+        const padding = pixelDensityToPixels(this.#activity, 5)
         const option = this.#classLoader.TextView.$new(this.#activity)
-        const margin = pixelsToPixelDensity(this.#activity, 30)
+        const margin = pixelDensityToPixels(this.#activity, 10)
         option.setText(this.#classLoader.String.$new(name))
         option.setBackgroundColor(this.#classLoader.Color.parseColor(this.#colorOff))
         option.setTextColor(this.#classLoader.Color.parseColor("#75757B"))
@@ -203,7 +203,7 @@ class Menu {
     
     addText(text, textSize, textColor) {
         const layoutParams = this.#classLoader.LinearLayout_LayoutParams.$new(this.#WRAP_CONTENT, this.#WRAP_CONTENT);
-        const margin = pixelsToPixelDensity(this.#activity, 20);
+        const margin = pixelDensityToPixels(this.#activity, 5);
         const textView = this.#classLoader.TextView.$new(this.#activity);
 
         textView.setText(this.#classLoader.String.$new(text));
@@ -217,7 +217,7 @@ class Menu {
 
     addSeekBar(textValue,initialValue, minValue, maxValue, callback) {
         const layoutParams = this.#classLoader.LinearLayout_LayoutParams.$new(this.#MATCH_PARENT, this.#WRAP_CONTENT);
-        const margin = pixelsToPixelDensity(this.#activity,1);
+        const margin = pixelDensityToPixels(this.#activity,1);
         const seekBar = this.#classLoader.SeekBar.$new(this.#activity);
         const textView = this.#classLoader.TextView.$new(this.#activity);
         seekBar.setMax(maxValue - minValue);

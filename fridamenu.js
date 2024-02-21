@@ -218,7 +218,7 @@ class Menu {
     addSeekBar(textValue,initialValue, minValue, maxValue, callback) {
         const layoutParams = this.#classLoader.LinearLayout_LayoutParams.$new(this.#MATCH_PARENT, this.#WRAP_CONTENT);
         const margin = pixelDensityToPixels(this.#activity,1);
-        const seekBar = this.#classLoader.SeekBar.$new(this.#activity);
+        const seekBar = this.#classLoader.SeekBar.$new(this.#activity, null, 0, Java.use("android.R$style").Widget_Holo_SeekBar.value);
         const textView = this.#classLoader.TextView.$new(this.#activity);
         seekBar.setMax(maxValue - minValue);
         seekBar.setProgress(0);

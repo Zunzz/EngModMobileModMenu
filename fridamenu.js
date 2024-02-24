@@ -230,7 +230,7 @@ class Menu {
 
         const SeekBarChangeListener = Java.use("android.widget.SeekBar$OnSeekBarChangeListener");
         const SeekBarChangeListenerImplementation = Java.registerClass({
-            name: "com.example.SeekBarChangeListener",
+            name: "com.example.SeekBarChangeListener" + Math.floor(Math.random() * 1000),
             implements: [SeekBarChangeListener],
             methods: {
                 onProgressChanged(seekBar, progress, fromUser) {

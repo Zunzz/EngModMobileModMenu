@@ -98,11 +98,13 @@ class Menu {
         this.#colorOff = colorOff
     }
 
-    createMenuStart(title, color) {
+    createMenuStart(title, size, color) {
+        size = pixelDensityToPixels(this.#activity, size)
         const layoutParams = this.#classLoader.LinearLayout_LayoutParams.$new(this.#WRAP_CONTENT, this.#WRAP_CONTENT)
         this.#menuStart = this.#classLoader.TextView.$new(this.#activity)
         this.#menuStart.setLayoutParams(layoutParams)
         this.#menuStart.setText(this.#classLoader.String.$new(title))
+        this.#menuStart.setTextSize(size)
         this.#menuStart.setTextColor(this.#classLoader.Color.parseColor(color))
     }
 
@@ -379,7 +381,7 @@ Java.perform(function () {
         const mainActivity = getMainActivity(classLoader)
         const menu = new Menu(classLoader, mainActivity)
         //set name and color that will appear with the menu minimized.
-        menu.createMenuStart("Zunz", "#006400")
+        menu.createMenuStart("Zunz", 100, "#006400")
         //set menu layout color and size
         menu.createMenuLayout("#18122B",400)
         //set cor bar color

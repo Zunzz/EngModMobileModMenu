@@ -15,6 +15,7 @@ function getClassLoader() {
         View_OnClickListener: Java.use("android.view.View$OnClickListener"),
         SeekBar: Java.use("android.widget.SeekBar") // Adicionando definição para SeekBar
     }
+    return classLoader
 }
 
 function pixelDensityToPixels(context, dp) {

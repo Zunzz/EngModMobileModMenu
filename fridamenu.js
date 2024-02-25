@@ -227,6 +227,7 @@ class Menu {
         seekBar.setLayoutParams(layoutParams);
         const text = Java.use("java.lang.String").$new(textValue+ " "+ initialValue);
         textView.setText(text)
+        textView.setTextColor(this.#classLoader.Color.parseColor("#75757B"))
         seekBar.setProgress(initialValue);
 
         const SeekBarChangeListener = Java.use("android.widget.SeekBar$OnSeekBarChangeListener");

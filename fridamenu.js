@@ -382,9 +382,9 @@ Java.perform(function () {
         const mainActivity = getMainActivity(classLoader)
         const menu = new Menu(classLoader, mainActivity)
         //set name and color that will appear with the menu minimized.
-        menu.createMenuStart("Zunz", 100, "#006400")
+        menu.createMenuStart("Zunz", 20, "#006400")
         //set menu layout color and size
-        menu.createMenuLayout("#18122B",400)
+        menu.createMenuLayout("#18122B", 150)
         //set cor bar color
         menu.createMenuBarLayout("#635985")
         //name and name color

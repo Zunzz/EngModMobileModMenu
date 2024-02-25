@@ -1,20 +1,21 @@
-const classLoader = {
-    Gravity: Java.use("android.view.Gravity"),
-    TextView: Java.use("android.widget.TextView"),
-    LinearLayout: Java.use("android.widget.LinearLayout"),
-    ViewGroup_LayoutParams: Java.use("android.view.ViewGroup$LayoutParams"),
-    LinearLayout_LayoutParams: Java.use("android.widget.LinearLayout$LayoutParams"),
-    Color: Java.use("android.graphics.Color"),
-    ActivityThread: Java.use("android.app.ActivityThread"),
-    ActivityThread_ActivityClientRecord: Java.use("android.app.ActivityThread$ActivityClientRecord"),
-    View_OnTouchListener: Java.use("android.view.View$OnTouchListener"),
-    MotionEvent: Java.use("android.view.MotionEvent"),
-    String: Java.use("java.lang.String"),
-    ScrollView: Java.use("android.widget.ScrollView"),
-    View_OnClickListener: Java.use("android.view.View$OnClickListener"),
-    SeekBar: Java.use("android.widget.SeekBar") // Adicionando definição para SeekBar
-};
-
+function getClassLoader() {
+    const classLoader = {
+        Gravity: Java.use("android.view.Gravity"),
+        TextView: Java.use("android.widget.TextView"),
+        LinearLayout: Java.use("android.widget.LinearLayout"),
+        ViewGroup_LayoutParams: Java.use("android.view.ViewGroup$LayoutParams"),
+        LinearLayout_LayoutParams: Java.use("android.widget.LinearLayout$LayoutParams"),
+        Color: Java.use("android.graphics.Color"),
+        ActivityThread: Java.use("android.app.ActivityThread"),
+        ActivityThread_ActivityClientRecord: Java.use("android.app.ActivityThread$ActivityClientRecord"),
+        View_OnTouchListener: Java.use("android.view.View$OnTouchListener"),
+        MotionEvent: Java.use("android.view.MotionEvent"),
+        String: Java.use("java.lang.String"),
+        ScrollView: Java.use("android.widget.ScrollView"),
+        View_OnClickListener: Java.use("android.view.View$OnClickListener"),
+        SeekBar: Java.use("android.widget.SeekBar") // Adicionando definição para SeekBar
+    }
+}
 
 function pixelDensityToPixels(context, dp) {
     const density = context.getResources().getDisplayMetrics().density.value
@@ -373,6 +374,7 @@ const option3 = {
 
 Java.perform(function () {
     Java.scheduleOnMainThread(function () {
+        const classLoader = getClassLoader()
         const mainActivity = getMainActivity(classLoader)
         const menu = new Menu(classLoader, mainActivity)
         //set name and color that will appear with the menu minimized.

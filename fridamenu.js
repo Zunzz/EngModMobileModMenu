@@ -64,7 +64,7 @@ class Menu {
 
     #createContentView() {
         this.#contentView = this.#classLoader.LinearLayout.$new(this.#activity)
-        const layoutParams = classLoader.LinearLayout_LayoutParams.$new(this.#MATCH_PARENT, this.#MATCH_PARENT)
+        const layoutParams = this.classLoader.LinearLayout_LayoutParams.$new(this.#MATCH_PARENT, this.#MATCH_PARENT)
         this.#contentView.setLayoutParams(layoutParams)
         this.#contentView.setGravity(this.#classLoader.Gravity.CENTER.value)
         this.#contentView.setBackgroundColor(this.#classLoader.Color.TRANSPARENT.value)
